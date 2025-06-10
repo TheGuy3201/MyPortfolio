@@ -19,7 +19,7 @@ const create = async (req, res) => {
 
 const list = async (req, res) => {
     try {
-        let projects = await Project.find().select('title roledescription repolink imgurls');
+        let projects = await Project.find().select('title roledescription repolink imgurl');
         res.json(projects);
     } catch (err) {
         console.error(err);
