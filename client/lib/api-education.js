@@ -50,12 +50,17 @@ const create = async (education, credentials) => {
   }
 };
 
-const list = async (signal) => {
+const list = async (signal = null) => {
   try {
-    const response = await fetch(API_BASE, {
+    const fetchOptions = {
       method: "GET",
-      signal,
-    });
+    };
+    
+    if (signal) {
+      fetchOptions.signal = signal;
+    }
+    
+    const response = await fetch(API_BASE, fetchOptions);
     return await handleResponse(response);
   } catch (err) {
     return handleError(err);

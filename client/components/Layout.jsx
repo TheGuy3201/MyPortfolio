@@ -68,22 +68,38 @@ export default function Layout() {
                         </>
                     )}
                     {auth.isAuthenticated() && (
-                        
-                        <button
-                            onClick={handleSignOut}
-                            style={{
-                                width: "40px",
-                                height: "40px",
-                                borderRadius: "50%",
-                                border: "none",
-                                background: "transparent",
-                                cursor: "pointer",
-                                fontWeight: "bold",
-                            }}
-                            title="Sign Out"
-                        >
-                            <img src="https://cdn-icons-png.flaticon.com/512/7046/7046204.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
-                        </button>
+                        <>
+                            <button
+                                onClick={() => navigateTo(`/user/${auth.isAuthenticated().user._id}`)}
+                                style={{
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "50%",
+                                    border: "none",
+                                    background: "transparent",
+                                    cursor: "pointer",
+                                    fontWeight: "bold",
+                                }}
+                                title="Profile"
+                            >
+                                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" className="Logo" alt="Profile" style={{ height: "48px" }} />
+                            </button>
+                            <button
+                                onClick={handleSignOut}
+                                style={{
+                                    width: "40px",
+                                    height: "40px",
+                                    borderRadius: "50%",
+                                    border: "none",
+                                    background: "transparent",
+                                    cursor: "pointer",
+                                    fontWeight: "bold",
+                                }}
+                                title="Sign Out"
+                            >
+                                <img src="https://cdn-icons-png.flaticon.com/512/7046/7046204.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
@@ -97,6 +113,18 @@ export default function Layout() {
                     <button onClick={() => navigateTo("/contact")}>Contact</button>
                     <button onClick={() => navigateTo("/about")}>About</button>
                     
+                    {/* Admin-only navigation */}
+                    {auth.isAuthenticated() && auth.isAuthenticated().user.role === 'admin' && (
+                        <>
+                            <button onClick={() => navigateTo("/admin")}>Admin Dashboard</button>
+                            <button onClick={() => navigateTo("/admin/education")}>Manage Education</button>
+                            <button onClick={() => navigateTo("/admin/education/new")}>Add Education</button>
+                            <button onClick={() => navigateTo("/admin/projects/new")}>Add Project</button>
+                            <button onClick={() => navigateTo("/admin/services")}>Manage Services</button>
+                            <button onClick={() => navigateTo("/admin/contacts")}>View Contacts</button>
+                            <button onClick={() => navigateTo("/users")}>Manage Users</button>
+                        </>
+                    )}
                 </nav>
             </div>
             <hr />

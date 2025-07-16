@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { list, remove } from "../lib/api-education";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import auth from "../lib/auth-helper";
 
 export default function EducationList() {
@@ -8,22 +8,32 @@ export default function EducationList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const jwt = auth.isAuthenticated();
+  const navigate = useNavigate();
 
+  // Check if user is authenticated and is admin
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
+    if (!jwt || !jwt.user || jwt.user.role !== 'admin') {
+      navigate('/');
+      return;
+    }
 
-    list(signal).then((data) => {
-      if (data?.error) {
-        setError(data.error);
-      } else {
-        setEducations(data);
+    const fetchEducations = async () => {
+      try {
+        const data = await list();
+        if (data?.error) {
+          setError(data.error);
+        } else {
+          setEducations(data);
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to load educations');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
 
-    return () => abortController.abort();
-  }, []);
+    fetchEducations();
+  }, [jwt, navigate]);
 
   const handleDelete = async (educationId) => {
     if (window.confirm("Are you sure you want to delete this education?")) {

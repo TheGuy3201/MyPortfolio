@@ -123,3 +123,11 @@ export const readService = async (serviceId) => {
     throw new Error(err.message || "Failed to read service");
   }
 };
+
+// Export shorthand aliases for backward compatibility
+export const create = createService;
+export const list = listServices;
+export const listAll = listAllServices;
+export const remove = deleteService;
+export const update = updateService;
+export const read = readService;

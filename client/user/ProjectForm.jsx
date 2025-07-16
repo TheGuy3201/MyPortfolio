@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { create } from "../project/api-project";
+import { create } from "../project/api-project.js";
 import auth from "../lib/auth-helper";
 
 export default function ProjectForm() {
