@@ -14,7 +14,7 @@ export const create = async (req, res) => {
 };
 const list = async (req, res) => {
     try {
-        let education = await Education.find().select('institution degree graddate accomplishments courses')
+        let education = await Education.find()
         res.json(education)
         } catch (err) {
             return res.status(400).json({
@@ -26,13 +26,13 @@ const list = async (req, res) => {
     try {
         let education = await Education.findById(id)
         if (!education)
-            return res.status('400').json({
+            return res.status(400).json({
                 error: "Education history not found"
         })
         req.profile = education
         next()
     } catch (err) {
-        return res.status('400').json({
+        return res.status(400).json({
             error: "Could not retrieve education history"
         })
     }

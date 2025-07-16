@@ -4,11 +4,17 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import userRoutes from './routes/users.routes.js';
 import projectRoutes from './routes/projects.routes.js';
 import educationRoutes from './routes/educations.routes.js';
 import contactsRoutes from './routes/contacts.routes.js';
+import servicesRoutes from './routes/services.routes.js';
 import authRoutes from './routes/auth.routes.js'; // Import authRoutes
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -18,14 +24,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
-app.use(helmet());
-app.use(cors());
+app.use(helmet({
+    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+            scriptSrc: ["'self'"],
+            objectSrc: ["'none'"],
+            imgSrc: ["'self'", "data:", "https:", "http:"],
+            fontSrc: ["'self'", "https:", "data:"],
+        },
+    },
+}));
+app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    credentials: true
+}));
+
+// Serve static files from client/public directory
+app.use('/res', express.static(path.join(__dirname, '..', 'client', 'public', 'res')));
 
 // Register routes with the correct base paths
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/educations', educationRoutes);
 app.use('/api/contacts', contactsRoutes);
+app.use('/api/services', servicesRoutes);
 app.use('/api/auth', authRoutes); // Register authRoutes
 
 // Optional: Also mount userRoutes and authRoutes at root if needed

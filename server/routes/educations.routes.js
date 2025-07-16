@@ -1,10 +1,18 @@
 import express from 'express'
 import educationCtrl from '../controllers/educations.controller.js'
+import authCtrl from '../controllers/auth.controller.js'
+
 const router = express.Router()
-router.route('/api/educations').post(educationCtrl.create)
-router.route('/api/educations').get(educationCtrl.list)
+
+router.route('/')
+  .get(educationCtrl.list)
+  .post(authCtrl.requireSignin, authCtrl.requireAdmin, educationCtrl.create)
+
+router.route('/:educationId')
+  .get(educationCtrl.read)
+  .put(authCtrl.requireSignin, authCtrl.requireAdmin, educationCtrl.update)
+  .delete(authCtrl.requireSignin, authCtrl.requireAdmin, educationCtrl.remove)
+
 router.param('educationId', educationCtrl.educationByID)
-router.route('/api/educations/:educationId').get(educationCtrl.read)
-router.route('/api/educations/:educationId').put(educationCtrl.update)
-router.route('/api/educations/:educationId').delete(educationCtrl.remove)
+
 export default router

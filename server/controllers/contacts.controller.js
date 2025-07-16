@@ -1,6 +1,7 @@
 import Contact from '../models/contacts.model.js'
 import extend from 'lodash/extend.js'
 import errorHandler from './error.controller.js'
+
 const create = async (req, res) => {
     const contact = new Contact(req.body)
     try {
@@ -16,7 +17,7 @@ const create = async (req, res) => {
 }
 const list = async (req, res) => {
     try {
-        let contacts = await Contact.find().select('name email updated created')
+        let contacts = await Contact.find().select('fullName email message phone subject created updated')
         res.json(contacts)
         } catch (err) {
             return res.status(400).json({
@@ -28,13 +29,13 @@ const list = async (req, res) => {
     try {
             let contact = await Contact.findById(id)
             if (!contact)
-                return res.status('400').json({
+                return res.status(400).json({
                     error: "Contact not found"
             })
             req.profile = contact
             next()
         } catch (err) {
-            return res.status('400').json({
+            return res.status(400).json({
                 error: "Could not retrieve contact"
             })
         }

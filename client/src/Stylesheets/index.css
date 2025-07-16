@@ -152,6 +152,15 @@ h1 {
   gap: 1em;
 }
 
+/* Add this for more spacing between form fields */
+.ContactPanel form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  width: 100%;
+  align-items: center;
+}
+
 .ContactPanel input {
   width: 100%;
   padding: 0.5em;
@@ -654,7 +663,7 @@ nav button:hover {
   font-size: 1.15rem;
   color: var(--text-main);
   text-align: left;
-  border: 1.5px solid var(--accent-blue);
+  border: 1.5px var(--accent-blue);
   margin-top: 0;
 }
 
@@ -716,4 +725,71 @@ nav button:hover {
   background: var(--accent-purple);
   color: #fff;
   outline: none;
+}
+
+/* --- Signup/Signin Form Styles to Match Contact Panel --- */
+.signup-panel, .signin-panel {
+  max-width: 420px;
+  margin: 3rem auto;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(62,142,208,0.12);
+  border: 1.5px solid var(--accent-blue);
+  color: var(--text-main);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-panel h2, .signin-panel h2 {
+  color: var(--accent-cyan);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.signup-panel form, .signin-panel form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  width: 100%;
+  align-items: center;
+}
+
+.signup-panel input, .signin-panel input {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 12px;
+  border: 2px solid var(--accent-blue);
+  background-color: var(--secondary-bg);
+  color: var(--text-main);
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.signup-panel .signup-error, .signin-panel .signin-error {
+  color: var(--accent-purple);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.signup-panel button, .signin-panel button {
+  border-radius: 12px;
+  border: 2px solid var(--accent-blue);
+  padding: 0.6em 1.2em;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background-color: var(--secondary-bg);
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+  margin-top: 1.2em;
+}
+
+.signup-panel button:hover, .signin-panel button:hover {
+  border-color: var(--accent-purple);
+  background-color: var(--accent-blue);
+  color: var(--text-main);
 }

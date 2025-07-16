@@ -1,39 +1,65 @@
+import { useState, useEffect } from "react";
+import { list } from "../lib/api-education.js";
+
 export default function Education() {
+    const [educations, setEducations] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchEducations = async () => {
+            try {
+                const data = await list();
+                if (data.error) {
+                    setError(data.error);
+                } else {
+                    setEducations(data);
+                }
+            } catch (err) {
+                setError(err.message || 'Failed to fetch education data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEducations();
+    }, []);
+
+    if (loading) return <div>Loading education data...</div>;
+    if (error) return <div>Error: {error}</div>;
+
     return (
-    <>
-        {/* Education page, its relatively simple at the moment due to my lack of extensive education*/}
-        <h1>Education</h1>
-        {/* Contains information about my educational background */}
-        <div className="EducationPanel">
-            
-            {/* Each education entry is split into cards to better organize the information */}
-            <div className="EducationCard">
-                <h2>Centennial College</h2>
-                <p>Game - Programming Advanced Diploma</p>
-                <p>Exp. Graduation Date: August 2026</p>
-                <p>GPA: 4.0/4.5</p>
-                <img className = "SelfImg" src="https://oaa.on.ca/Assets/Common/Shared_Images/Awards/2024/1200x675%20DE-03.png" alt="Centennial College" />
+        <>
+            {/* Education page, its relatively simple at the moment due to my lack of extensive education*/}
+            <h1>Education</h1>
+            {/* Contains information about my educational background */}
+            <div className="EducationPanel">
+                {educations.map((education) => (
+                    <div key={education._id} className="EducationCard">
+                        <h2>{education.institution}</h2>
+                        <p>{education.degree}</p>
+                        <p>{education.graddate ? `Graduation Date: ${new Date(education.graddate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}` : ''}</p>
+                        {education.accomplishments && <p>{education.accomplishments}</p>}
+                        {education.imgurl && (
+                            <img 
+                                className="SelfImg" 
+                                src={education.imgurl} 
+                                alt={education.institution} 
+                            />
+                        )}
 
-                {/* A list of important courses I took in said program */}
-                <ul className="CourseList">
-                    <p>Relevant Courses:</p>
-                    <li>Java Programming</li>
-                    <li>Game Programming</li>
-                    <li>Web Application Development</li>
-                    <li>Software Requirements Engineering & Systems Design</li>
-                    <li>C++ for Game Development</li>
-                    <li>Software Testing & Quality</li>
-                </ul>
+                        {/* A list of important courses I took in said program */}
+                        {education.courses && education.courses.length > 0 && (
+                            <ul className="CourseList">
+                                <p>Relevant Courses:</p>
+                                {education.courses.map((course, index) => (
+                                    <li key={index}>{course}</li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                ))}
             </div>
-
-            {/* A relatively simple high school education card */}
-            <div className="EducationCard">
-                <h2>High School</h2>
-                <p>Sir Oliver Mowat Collegiate</p>
-                <p>Graduated: June 2023</p>
-                <p>Honour Roll Grades: 9, 10, 11, 12</p>
-            </div>
-        </div>
-    </>
+        </>
     );
 }
