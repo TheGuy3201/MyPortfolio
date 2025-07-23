@@ -27,7 +27,8 @@
   },
   "scripts": {
     "dev": "concurrently 'cd client && npm run dev' 'nodemon server.js'",
-    "build": "cd client && npm install && npm run build",
+    "build": "chmod +x build.sh && ./build.sh",
+    "build:fallback": "cd client && rm -rf node_modules package-lock.json && npm install --no-optional && npm run build",
     "start": "node server.js",
     "client": "cd client && npm start",
     "server": "nodemon server.js",

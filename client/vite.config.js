@@ -36,18 +36,7 @@ export default defineConfig({
   },
   build: {
     // Enable compression optimizations
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log'],
-        passes: 2 // Multiple passes for better compression
-      },
-      mangle: {
-        safari10: true // Better Safari compatibility
-      }
-    },
+    minify: 'esbuild', // Use esbuild instead of terser for faster builds
     rollupOptions: {
       output: {
         manualChunks: {
@@ -59,10 +48,7 @@ export default defineConfig({
           utils: ['@emailjs/browser', 'query-string']
         },
         // Optimize chunk file names for better caching
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop().replace('.jsx', '') : 'chunk';
-          return `assets/js/[name]-[hash].js`;
-        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name.endsWith('.css')) {
             return 'assets/css/[name]-[hash][extname]';
@@ -70,17 +56,21 @@ export default defineConfig({
           return 'assets/[name]-[hash][extname]';
         }
       },
-      // Enable tree shaking for better optimization
-      treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false,
-        tryCatchDeoptimization: false
-      }
+      // Disable strict tree shaking to prevent build issues
+      treeshake: false
     },
     chunkSizeWarningLimit: 500, // Stricter chunk size limit
-    // Enable source maps for production debugging
+    // Disable source maps for production
     sourcemap: false,
     // Optimize CSS
-    cssCodeSplit: true
+    cssCodeSplit: true,
+    // Increase memory for builds
+    commonjsOptions: {
+      include: [/node_modules/]
+    }
+  },
+  // Add optimizations for dependencies
+  optimizeDeps: {
+    include: ['react', 'react-dom', '@mui/material', '@mui/icons-material']
   }
 });

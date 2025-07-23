@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently 'vite' \"nodemon ../server.js\"",
-    "build": "vite build",
+    "build": "npm ci --no-optional && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
