@@ -26,8 +26,11 @@
     "vitest": "^3.2.4"
   },
   "scripts": {
-    "dev": "concurrently 'vite' \"nodemon server.js\"",
-    "build": "vite build",
+    "dev": "concurrently 'cd client && npm run dev' 'nodemon server.js'",
+    "build": "cd client && npm install && npm run build",
+    "start": "node server.js",
+    "client": "cd client && npm start",
+    "server": "nodemon server.js",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
