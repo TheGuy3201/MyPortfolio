@@ -15,3 +15,7 @@ services:
         value: false
       - key: NPM_CONFIG_AUDIT
         value: false
+      - key: NPM_CONFIG_CACHE
+        value: /tmp/.npm
+      - key: NPM_CONFIG_PREFER_OFFLINE
+        value: false
