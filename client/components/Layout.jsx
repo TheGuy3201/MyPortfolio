@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import auth from "../lib/auth-helper";
 import { useNavigate } from "react-router-dom";
 
-export default function Layout() {
+const Layout = memo(() => {
     const navigate = useNavigate();
 
-    function navigateTo(path) {
+    const navigateTo = useCallback((path) => {
         navigate(path);
-    }
+    }, [navigate]);
 
-    function handleSignOut() {
+    const handleSignOut = useCallback(() => {
         auth.clearJWT(() => navigateTo("/"));
-    }
+    }, [navigateTo]);
 
     return (
         <>
@@ -47,7 +47,7 @@ export default function Layout() {
                                 }}
                                 title="Sign Up"
                             >
-                            <img src="https://static.thenounproject.com/png/6478-200.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
+                            <img src="https://static.thenounproject.com/png/6478-200.png" className="Logo" alt="Sign up icon - new user registration" style={{ height: "48px" }} />
 
                             </button>
                             <button
@@ -63,7 +63,7 @@ export default function Layout() {
                                 }}
                                 title="Sign In"
                             >
-                                <img src="https://cdn-icons-png.flaticon.com/512/152/152533.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
+                                <img src="https://cdn-icons-png.flaticon.com/512/152/152533.png" className="Logo" alt="Sign in icon - user login" style={{ height: "48px" }} />
                             </button>
                         </>
                     )}
@@ -82,7 +82,7 @@ export default function Layout() {
                                 }}
                                 title="Profile"
                             >
-                                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" className="Logo" alt="Profile" style={{ height: "48px" }} />
+                                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" className="Logo" alt="User profile icon" style={{ height: "48px" }} />
                             </button>
                             <button
                                 onClick={handleSignOut}
@@ -97,7 +97,7 @@ export default function Layout() {
                                 }}
                                 title="Sign Out"
                             >
-                                <img src="https://cdn-icons-png.flaticon.com/512/7046/7046204.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
+                                <img src="https://cdn-icons-png.flaticon.com/512/7046/7046204.png" className="Logo" alt="Sign out icon - logout" style={{ height: "48px" }} />
                             </button>
                         </>
                     )}
@@ -130,4 +130,7 @@ export default function Layout() {
             <hr />
         </>
     );
-}
+});
+
+Layout.displayName = 'Layout';
+export default Layout;

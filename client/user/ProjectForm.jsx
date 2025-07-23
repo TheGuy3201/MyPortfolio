@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { create } from "../project/api-project.js";
 import auth from "../lib/auth-helper";
 
-export default function ProjectForm() {
+const ProjectForm = memo(() => {
   const [values, setValues] = useState({
     name: "",
     description: "",
@@ -17,9 +17,9 @@ export default function ProjectForm() {
   });
   const [open, setOpen] = useState(false);
 
-  const handleChange = (name) => (event) => {
+  const handleChange = useCallback((name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-  };
+  }, [values]);
 
   const handleFileChange = (event) => {
     setValues({ ...values, image: event.target.files[0] });
@@ -136,4 +136,7 @@ export default function ProjectForm() {
       )}
     </div>
   );
-}
+});
+
+ProjectForm.displayName = 'ProjectForm';
+export default ProjectForm;

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, memo, useCallback, useMemo } from "react";
 import { createContact } from "../lib/api-contact.js";
 import emailjs from '@emailjs/browser';
 
 // Initialize EmailJS with your public key
 emailjs.init('bp1FhOMEoyawU1owx');
 
-export default function Contact() {
+const Contact = memo(() => {
   const [form, setForm] = useState({ 
     fullName: "", 
     email: "", 
@@ -17,13 +17,14 @@ export default function Contact() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setForm(prevForm => ({ ...prevForm, [name]: value }));
     setStatus("");
     setError("");
-  };
+  }, []);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     if (!form.fullName || !form.email || !form.message) {
       setError("Name, Email, and Message are required fields.");
       return false;
@@ -41,9 +42,9 @@ export default function Contact() {
     }
     
     return true;
-  };
+  }, [form.fullName, form.email, form.message]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
     if (!validateForm()) {
@@ -111,7 +112,7 @@ export default function Contact() {
     } finally {
       setLoading(false);
     }
-  };
+  });
 
   return (
     <>
@@ -122,26 +123,26 @@ export default function Contact() {
               <img src="/res/Pic of me.jpg" className="SelfImg" alt="Picture of Joshua D" />
               {/* Email Address */}
               <button onClick={() => window.open("mailto:josh.des.21@gmail.com")}>
-                  <img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail logo" />
+                  <img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail email icon - contact via email" />
                   Email Address
               </button>
 
               {/* Phone Number */}
               <button onClick={() => window.open("tel:+6473559303")}>
-                  <img src="https://cdn-icons-png.flaticon.com/512/4367/4367049.png" alt="Phone logo" />
+                  <img src="https://cdn-icons-png.flaticon.com/512/4367/4367049.png" alt="Phone icon - contact by phone" />
                   Phone Number
               </button>
 
               {/* LinkedIn */}
               <button onClick={() => window.open("https://www.linkedin.com/in/joshua-desroches/")}>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/500px-LinkedIn_logo_initials.png" alt="LinkedIn logo" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/500px-LinkedIn_logo_initials.png" alt="LinkedIn logo - professional networking profile" />
                   Linkedin Profile
               </button>
               
 
               {/* Github */}
               <button onClick={() => window.open("https://github.com/TheGuy3201")}>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="Github logo" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub logo - code repositories and projects" />
                   Github Profile
               </button>
               
@@ -200,4 +201,7 @@ export default function Contact() {
       </div>
     </>
   );
-}
+});
+
+Contact.displayName = 'Contact';
+export default Contact;

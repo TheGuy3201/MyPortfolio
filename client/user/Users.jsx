@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import {
   Paper,
   List,
@@ -15,7 +15,30 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import { list } from "./api-user.js";
 import { Link as RouterLink } from "react-router-dom";
 
-export default function Users() {
+const UserItem = memo(({ item }) => (
+  <Link
+    component={RouterLink}
+    to={`/user/${item._id}`}
+    underline="none"
+    sx={{ color: "inherit" }}
+  >
+    <ListItem button>
+      <ListItemAvatar>
+        <Avatar />
+      </ListItemAvatar>
+      <ListItemText primary={item.name} />
+      <ListItemSecondaryAction>
+        <IconButton edge="end">
+          <ArrowForward />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  </Link>
+));
+
+UserItem.displayName = 'UserItem';
+
+const Users = memo(() => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -48,27 +71,12 @@ export default function Users() {
       </Typography>
       <List dense>
         {users.map((item) => (
-          <Link
-            component={RouterLink}
-            to={`/user/${item._id}`}
-            underline="none"
-            key={item._id}
-            sx={{ color: "inherit" }}
-          >
-            <ListItem button>
-              <ListItemAvatar>
-                <Avatar />
-              </ListItemAvatar>
-              <ListItemText primary={item.name} />
-              <ListItemSecondaryAction>
-                <IconButton edge="end">
-                  <ArrowForward />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </Link>
+          <UserItem key={item._id} item={item} />
         ))}
       </List>
     </Paper>
   );
-}
+});
+
+Users.displayName = 'Users';
+export default Users;

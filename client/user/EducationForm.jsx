@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, memo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { create } from "../lib/api-education";
 import auth from "../lib/auth-helper";
 
-export default function EducationForm() {
+const EducationForm = memo(() => {
   const [values, setValues] = useState({
     institution: "",
     degree: "",
@@ -15,9 +15,9 @@ export default function EducationForm() {
   });
   const [open, setOpen] = useState(false);
 
-  const handleChange = (name) => (event) => {
+  const handleChange = useCallback((name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-  };
+  }, [values]);
 
   const clickSubmit = (e) => {
     e.preventDefault();
@@ -114,4 +114,7 @@ export default function EducationForm() {
       )}
     </div>
   );
-}
+});
+
+EducationForm.displayName = 'EducationForm';
+export default EducationForm;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   Card, 
@@ -20,9 +20,54 @@ import {
 } from "@mui/icons-material";
 import auth from "../lib/auth-helper";
 
-export default function AdminDashboard() {
+const AdminCard = memo(({ card }) => (
+  <Grid item xs={12} sm={6} md={4}>
+    <Card 
+      sx={{ 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+        transition: 'transform 0.2s',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: 3
+        }
+      }}
+    >
+      <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
+        <Box sx={{ color: card.color, mb: 2 }}>
+          {card.icon}
+        </Box>
+        <Typography variant="h6" component="h2" gutterBottom>
+          {card.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {card.description}
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
+        <Button
+          component={Link}
+          to={card.link}
+          variant="contained"
+          sx={{ backgroundColor: card.color }}
+        >
+          Open
+        </Button>
+      </CardActions>
+    </Card>
+  </Grid>
+));
+
+AdminCard.displayName = 'AdminCard';
+
+const AdminDashboard = memo(() => {
   const navigate = useNavigate();
   const jwt = auth.isAuthenticated();
+
+  const handleNavigateHome = useCallback(() => navigate('/'), [navigate]);
+  const handleNavigateProfile = useCallback(() => navigate(`/user/${jwt.user._id}`), [navigate, jwt.user._id]);
+  const handleSignOut = useCallback(() => auth.clearJWT(() => navigate('/')), [navigate]);
 
   // Check if user is admin
   if (!jwt || jwt.user.role !== 'admin') {
@@ -102,42 +147,7 @@ export default function AdminDashboard() {
 
       <Grid container spacing={3}>
         {adminCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card 
-              sx={{ 
-                height: '100%', 
-                display: 'flex', 
-                flexDirection: 'column',
-                transition: 'transform 0.2s',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 3
-                }
-              }}
-            >
-              <CardContent sx={{ flexGrow: 1, textAlign: 'center' }}>
-                <Box sx={{ color: card.color, mb: 2 }}>
-                  {card.icon}
-                </Box>
-                <Typography variant="h6" component="h2" gutterBottom>
-                  {card.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {card.description}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
-                <Button
-                  component={Link}
-                  to={card.link}
-                  variant="contained"
-                  sx={{ backgroundColor: card.color }}
-                >
-                  Open
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+          <AdminCard key={index} card={card} />
         ))}
       </Grid>
 
@@ -148,21 +158,21 @@ export default function AdminDashboard() {
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Button
             variant="outlined"
-            onClick={() => navigate('/')}
+            onClick={handleNavigateHome}
             sx={{ minWidth: 120 }}
           >
             View Portfolio
           </Button>
           <Button
             variant="outlined"
-            onClick={() => navigate(`/user/${jwt.user._id}`)}
+            onClick={handleNavigateProfile}
             sx={{ minWidth: 120 }}
           >
             My Profile
           </Button>
           <Button
             variant="outlined"
-            onClick={() => auth.clearJWT(() => navigate('/'))}
+            onClick={handleSignOut}
             color="error"
             sx={{ minWidth: 120 }}
           >
@@ -172,4 +182,7 @@ export default function AdminDashboard() {
       </Box>
     </Container>
   );
-}
+});
+
+AdminDashboard.displayName = 'AdminDashboard';
+export default AdminDashboard;

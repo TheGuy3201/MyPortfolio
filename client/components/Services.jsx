@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
 import { listServices } from "../lib/api-service.js";
 
-export default function Services() {
+const Services = memo(() => {
   const [services, setServices] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,13 +24,13 @@ export default function Services() {
   }, []);
 
   // Function to toggle the flipped state of a service card
-  const toggleFlip = (index) => {
+  const toggleFlip = useCallback((index) => {
     setFlipped((prev) => {
       const updated = [...prev];
       updated[index] = !updated[index];
       return updated;
     });
-  };
+  }, []);
 
   if (loading) return <div>Loading services...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -53,7 +53,7 @@ export default function Services() {
                 className="ServiceCardFront"
                 onClick={() => toggleFlip(index)}
               >
-                <img src={service.icon} alt={service.title} className="service-icon" />
+                <img src={service.icon} alt={`${service.title} service icon - click to learn more about this service offering`} className="service-icon" />
                 <h2>{service.title}</h2>
               </div>
               
@@ -80,4 +80,7 @@ export default function Services() {
       </div>
     </>
   );
-}
+});
+
+Services.displayName = 'Services';
+export default Services;

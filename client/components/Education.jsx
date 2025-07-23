@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { list } from "../lib/api-education.js";
 
-export default function Education() {
+const Education = memo(() => {
     const [educations, setEducations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -44,7 +44,7 @@ export default function Education() {
                             <img 
                                 className="SelfImg" 
                                 src={education.imgurl} 
-                                alt={education.institution} 
+                                alt={`Logo and campus image of ${education.institution}`} 
                             />
                         )}
 
@@ -62,4 +62,7 @@ export default function Education() {
             </div>
         </>
     );
-}
+});
+
+Education.displayName = 'Education';
+export default Education;
