@@ -2,11 +2,11 @@ services:
   - type: web
     name: myportfolio
     env: node
-    buildCommand: npm run build:fallback
+    buildCommand: npm run build
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
-        value: 18.17.0
+        value: 20.17.0
       - key: NODE_ENV
         value: production
       - key: NPM_CONFIG_OPTIONAL
