@@ -3,6 +3,10 @@
 # Clean build script for Render deployment
 echo "Starting clean build process..."
 
+# First install root dependencies (server dependencies)
+echo "Installing root/server dependencies..."
+npm install --production
+
 # Navigate to client directory
 cd client
 
@@ -17,11 +21,11 @@ echo "Clearing npm cache..."
 npm cache clean --force
 
 # Install dependencies without optional packages
-echo "Installing dependencies..."
+echo "Installing client dependencies..."
 npm install --no-optional --prefer-offline --no-audit --no-fund --production=false
 
 # Run the build
-echo "Building the application..."
+echo "Building the client application..."
 npm run build
 
 echo "Build completed successfully!"
