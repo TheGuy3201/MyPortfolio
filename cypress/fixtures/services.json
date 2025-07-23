@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "1",
+    "title": "Frontend Development",
+    "description": "Modern, responsive web interfaces using React, Vue, and Angular frameworks with emphasis on user experience and performance.",
+    "details": "Comprehensive frontend development services including responsive design, single-page applications, progressive web apps, and modern JavaScript frameworks. Expertise in HTML5, CSS3, JavaScript ES6+, TypeScript, and popular libraries like React, Vue.js, and Angular.",
+    "icon": "/res/services/frontend.svg",
+    "category": "Web Development",
+    "featured": true
+  },
+  {
+    "_id": "2",
+    "title": "Backend Development",
+    "description": "Robust server-side solutions with Node.js, Express, and database integration for scalable web applications.",
+    "details": "Full-stack backend development including RESTful APIs, microservices architecture, database design and optimization, authentication systems, and cloud deployment. Proficient in Node.js, Express.js, MongoDB, MySQL, and cloud platforms like AWS and Azure.",
+    "icon": "/res/services/backend.svg",
+    "category": "Web Development",
+    "featured": true
+  },
+  {
+    "_id": "3",
+    "title": "Game Programming",
+    "description": "Interactive game development using Unity and Unreal Engine with focus on gameplay mechanics and performance optimization.",
+    "details": "Professional game development services including gameplay programming, physics simulation, AI systems, procedural generation, and cross-platform deployment. Specialized in Unity3D, C#, game optimization, and immersive user experiences.",
+    "icon": "/res/services/programming.svg",
+    "category": "Game Development",
+    "featured": true
+  },
+  {
+    "_id": "4",
+    "title": "UI/UX Design",
+    "description": "User-centered design solutions that balance aesthetics with functionality for optimal user engagement.",
+    "details": "Complete UI/UX design services including user research, wireframing, prototyping, visual design, and usability testing. Focus on creating intuitive interfaces that enhance user experience while meeting business objectives.",
+    "icon": "/res/services/design.svg",
+    "category": "Design",
+    "featured": false
+  },
+  {
+    "_id": "5",
+    "title": "Agile Development",
+    "description": "Efficient project management and development processes using Agile methodologies for timely delivery.",
+    "details": "Agile project management and development consultation including sprint planning, scrum implementation, continuous integration/deployment, and team collaboration strategies. Experienced in Jira, Git workflows, and DevOps practices.",
+    "icon": "/res/services/agile.svg",
+    "category": "Consulting",
+    "featured": false
+  }
+]

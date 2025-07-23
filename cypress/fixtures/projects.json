@@ -1,0 +1,49 @@
+[
+  {
+    "_id": "1",
+    "title": "Backrooms Horror Game",
+    "description": "A first-person survival horror game built with Unity and C#. Features procedural maze generation, atmospheric lighting, and immersive sound design.",
+    "imgurl": [
+      "/res/BackroomsGame/Backrooms1.png",
+      "/res/BackroomsGame/Backrooms2.png",
+      "/res/BackroomsGame/Backrooms3.png",
+      "/res/BackroomsGame/Backrooms4.png",
+      "/res/BackroomsGame/Backrooms5.png"
+    ],
+    "url": "https://github.com/TheGuy3201/BackroomsGame",
+    "technologies": ["Unity", "C#", "Blender"],
+    "status": "Completed",
+    "featured": true
+  },
+  {
+    "_id": "2",
+    "title": "MemeDex Mobile App",
+    "description": "React Native mobile application for browsing and sharing memes with social features, user authentication, and real-time updates.",
+    "imgurl": [
+      "/res/MemeDexApp/MemeDex1.png",
+      "/res/MemeDexApp/MemeDex2.png",
+      "/res/MemeDexApp/MemeDex3.png"
+    ],
+    "url": "https://github.com/TheGuy3201/MemeDexApp",
+    "technologies": ["React Native", "Node.js", "MongoDB"],
+    "status": "In Development",
+    "featured": true
+  },
+  {
+    "_id": "3",
+    "title": "Terminus Space Station",
+    "description": "3D space station management simulation game with resource management, crew assignment, and dynamic event systems.",
+    "imgurl": [
+      "/res/Terminus/Terminus1.jpg",
+      "/res/Terminus/Terminus2.jpg",
+      "/res/Terminus/Terminus3.jpg",
+      "/res/Terminus/Terminus4.jpg",
+      "/res/Terminus/Terminus5.jpg",
+      "/res/Terminus/Terminus6.jpg"
+    ],
+    "url": "https://github.com/TheGuy3201/Terminus",
+    "technologies": ["Unity", "C#", "SQLite"],
+    "status": "Completed",
+    "featured": false
+  }
+]
