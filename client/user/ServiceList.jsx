@@ -23,7 +23,7 @@ export default function ServiceList() {
     });
 
     return () => abortController.abort();
-  }, []);
+  }, [jwt.token]);
 
   const handleDelete = async (serviceId) => {
     if (window.confirm("Are you sure you want to delete this service?")) {

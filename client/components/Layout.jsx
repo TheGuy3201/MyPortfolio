@@ -1,17 +1,17 @@
-import React, { memo, useCallback } from 'react';
+import React from 'react';
 import auth from "../lib/auth-helper";
 import { useNavigate } from "react-router-dom";
 
-const Layout = memo(() => {
+export default function Layout() {
     const navigate = useNavigate();
 
-    const navigateTo = useCallback((path) => {
+    function navigateTo(path) {
         navigate(path);
-    }, [navigate]);
+    }
 
-    const handleSignOut = useCallback(() => {
-        auth.clearJWT(() => navigateTo("/"));
-    }, [navigateTo]);
+    function handleSignOut() {
+        auth.clearJWT(() => navigate('/'));
+    }
 
     return (
         <>
@@ -32,7 +32,7 @@ const Layout = memo(() => {
                 </div>
                 {/* Auth buttons far right */}
                 <div style={{ display: "flex", gap: "0.5rem" }}>
-                    {!auth.isAuthenticated() && (
+                    {!authenticatedUser && (
                         <>
                             <button
                                 onClick={() => navigateTo("/signup")}
@@ -47,7 +47,7 @@ const Layout = memo(() => {
                                 }}
                                 title="Sign Up"
                             >
-                            <img src="https://static.thenounproject.com/png/6478-200.png" className="Logo" alt="Sign up icon - new user registration" style={{ height: "48px" }} />
+                            <img src="https://static.thenounproject.com/png/6478-200.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
 
                             </button>
                             <button
@@ -63,14 +63,14 @@ const Layout = memo(() => {
                                 }}
                                 title="Sign In"
                             >
-                                <img src="https://cdn-icons-png.flaticon.com/512/152/152533.png" className="Logo" alt="Sign in icon - user login" style={{ height: "48px" }} />
+                                <img src="https://cdn-icons-png.flaticon.com/512/152/152533.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
                             </button>
                         </>
                     )}
-                    {auth.isAuthenticated() && (
+                    {authenticatedUser && (
                         <>
                             <button
-                                onClick={() => navigateTo(`/user/${auth.isAuthenticated().user._id}`)}
+                                onClick={() => navigateTo(`/user/${authenticatedUser.user._id}`)}
                                 style={{
                                     width: "40px",
                                     height: "40px",
@@ -82,7 +82,7 @@ const Layout = memo(() => {
                                 }}
                                 title="Profile"
                             >
-                                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" className="Logo" alt="User profile icon" style={{ height: "48px" }} />
+                                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" className="Logo" alt="Profile" style={{ height: "48px" }} />
                             </button>
                             <button
                                 onClick={handleSignOut}
@@ -97,7 +97,7 @@ const Layout = memo(() => {
                                 }}
                                 title="Sign Out"
                             >
-                                <img src="https://cdn-icons-png.flaticon.com/512/7046/7046204.png" className="Logo" alt="Sign out icon - logout" style={{ height: "48px" }} />
+                                <img src="https://cdn-icons-png.flaticon.com/512/7046/7046204.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
                             </button>
                         </>
                     )}
@@ -114,7 +114,7 @@ const Layout = memo(() => {
                     <button onClick={() => navigateTo("/about")}>About</button>
                     
                     {/* Admin-only navigation */}
-                    {auth.isAuthenticated() && auth.isAuthenticated().user.role === 'admin' && (
+                    {isAdmin && (
                         <>
                             <button onClick={() => navigateTo("/admin")}>Admin Dashboard</button>
                             <button onClick={() => navigateTo("/admin/education")}>Manage Education</button>

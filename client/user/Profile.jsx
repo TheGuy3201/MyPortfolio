@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   List,
@@ -18,7 +18,7 @@ import auth from "../lib/auth-helper.js";
 import { read } from "./api-user.js";
 import { useLocation, Navigate, Link, useParams } from "react-router-dom";
 
-const Profile = memo(() => {
+export default function Profile() {
   const location = useLocation();
   const [user, setUser] = useState({});
   const [redirectToSignin, setRedirectToSignin] = useState(false);
@@ -92,7 +92,4 @@ const Profile = memo(() => {
       </List>
     </Paper>
   );
-});
-
-Profile.displayName = 'Profile';
-export default Profile;
+}

@@ -1,11 +1,11 @@
-import { useState, memo, useCallback, useMemo } from "react";
+import { useState } from "react";
 import { createContact } from "../lib/api-contact.js";
 import emailjs from '@emailjs/browser';
 
 // Initialize EmailJS with your public key
 emailjs.init('bp1FhOMEoyawU1owx');
 
-const Contact = memo(() => {
+export default function Contact() {
   const [form, setForm] = useState({ 
     fullName: "", 
     email: "", 
@@ -17,14 +17,13 @@ const Contact = memo(() => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setForm(prevForm => ({ ...prevForm, [name]: value }));
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
     setStatus("");
     setError("");
-  }, []);
+  };
 
-  const validateForm = useCallback(() => {
+  const validateForm = () => {
     if (!form.fullName || !form.email || !form.message) {
       setError("Name, Email, and Message are required fields.");
       return false;
@@ -42,9 +41,9 @@ const Contact = memo(() => {
     }
     
     return true;
-  }, [form.fullName, form.email, form.message]);
+  };
 
-  const handleSubmit = useCallback(async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) {
@@ -123,26 +122,26 @@ const Contact = memo(() => {
               <img src="/res/Pic of me.jpg" className="SelfImg" alt="Picture of Joshua D" />
               {/* Email Address */}
               <button onClick={() => window.open("mailto:josh.des.21@gmail.com")}>
-                  <img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail email icon - contact via email" />
+                  <img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail logo" />
                   Email Address
               </button>
 
               {/* Phone Number */}
               <button onClick={() => window.open("tel:+6473559303")}>
-                  <img src="https://cdn-icons-png.flaticon.com/512/4367/4367049.png" alt="Phone icon - contact by phone" />
+                  <img src="https://cdn-icons-png.flaticon.com/512/4367/4367049.png" alt="Phone logo" />
                   Phone Number
               </button>
 
               {/* LinkedIn */}
               <button onClick={() => window.open("https://www.linkedin.com/in/joshua-desroches/")}>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/500px-LinkedIn_logo_initials.png" alt="LinkedIn logo - professional networking profile" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/500px-LinkedIn_logo_initials.png" alt="LinkedIn logo" />
                   Linkedin Profile
               </button>
               
 
               {/* Github */}
               <button onClick={() => window.open("https://github.com/TheGuy3201")}>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub logo - code repositories and projects" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="Github logo" />
                   Github Profile
               </button>
               
@@ -201,7 +200,4 @@ const Contact = memo(() => {
       </div>
     </>
   );
-});
-
-Contact.displayName = 'Contact';
-export default Contact;
+}

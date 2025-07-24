@@ -1,71 +1,11 @@
-import React, { useState, useEffect, memo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Divider, Alert } from '@mui/material';
 import { Delete as DeleteIcon, Email as EmailIcon, Phone as PhoneIcon, Person as PersonIcon, Subject as SubjectIcon } from '@mui/icons-material';
 import { listContacts, deleteContact } from '../lib/api-contact';
 import auth from '../lib/auth-helper';
 import { Link } from 'react-router-dom';
 
-const ContactItem = memo(({ contact, onDelete }) => {
-  const handleDelete = useCallback(() => {
-    onDelete(contact._id);
-  }, [contact._id, onDelete]);
-
-  return (
-    <Paper sx={{ mb: 2 }}>
-      <ListItem sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <PersonIcon sx={{ mr: 1 }} />
-          <Typography variant="h6">
-            {contact.fullName}
-          </Typography>
-        </Box>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <EmailIcon sx={{ mr: 1 }} />
-          <Typography variant="body2">{contact.email}</Typography>
-        </Box>
-        
-        {contact.phone && (
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-            <PhoneIcon sx={{ mr: 1 }} />
-            <Typography variant="body2">{contact.phone}</Typography>
-          </Box>
-        )}
-        
-        {contact.subject && (
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-            <SubjectIcon sx={{ mr: 1 }} />
-            <Typography variant="body2"><strong>Subject:</strong> {contact.subject}</Typography>
-          </Box>
-        )}
-        
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          <strong>Message:</strong> {contact.message}
-        </Typography>
-        
-        <Typography variant="caption" color="textSecondary" sx={{ mb: 1 }}>
-          Submitted: {new Date(contact.created).toLocaleDateString()}
-        </Typography>
-        
-        <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteIcon />}
-            onClick={handleDelete}
-            size="small"
-          >
-            Delete
-          </Button>
-        </Box>
-      </ListItem>
-    </Paper>
-  );
-});
-
-ContactItem.displayName = 'ContactItem';
-
-const ContactList = memo(() => {
+const ContactList = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -87,7 +27,7 @@ const ContactList = memo(() => {
     fetchContacts();
   }, []);
 
-  const handleDelete = useCallback(async (contactId) => {
+  const handleDelete = async (contactId) => {
     try {
       const jwt = auth.isAuthenticated();
       await deleteContact(contactId, jwt.token);
@@ -97,7 +37,7 @@ const ContactList = memo(() => {
     } catch (err) {
       setError(err.message || 'Failed to delete contact');
     }
-  }, [contacts]);
+  };
 
   if (loading) return <Typography>Loading contacts...</Typography>;
 
@@ -124,13 +64,60 @@ const ContactList = memo(() => {
       ) : (
         <List>
           {contacts.map((contact) => (
-            <ContactItem key={contact._id} contact={contact} onDelete={handleDelete} />
+            <Paper key={contact._id} sx={{ mb: 2 }}>
+              <ListItem sx={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <PersonIcon sx={{ mr: 1 }} />
+                  <Typography variant="h6">
+                    {contact.fullName}
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <EmailIcon sx={{ mr: 1 }} />
+                  <Typography variant="body2">{contact.email}</Typography>
+                </Box>
+                
+                {contact.phone && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <PhoneIcon sx={{ mr: 1 }} />
+                    <Typography variant="body2">{contact.phone}</Typography>
+                  </Box>
+                )}
+                
+                {contact.subject && (
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <SubjectIcon sx={{ mr: 1 }} />
+                    <Typography variant="body2"><strong>Subject:</strong> {contact.subject}</Typography>
+                  </Box>
+                )}
+                
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  <strong>Message:</strong> {contact.message}
+                </Typography>
+                
+                <Typography variant="caption" color="textSecondary" sx={{ mb: 1 }}>
+                  Submitted: {new Date(contact.created).toLocaleDateString()}
+                </Typography>
+                
+                <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDelete(contact._id)}
+                    size="small"
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              </ListItem>
+            </Paper>
           ))}
         </List>
       )}
     </Box>
   );
-});
+};
 
-ContactList.displayName = 'ContactList';
 export default ContactList;

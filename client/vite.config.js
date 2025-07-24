@@ -1,26 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import viteCompression from 'vite-plugin-compression';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    // Enable gzip compression with optimized settings
-    viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      threshold: 1024,
-      deleteOriginFile: false
-    }),
-    // Enable brotli compression (better compression ratio for large files)
-    viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-      threshold: 1024,
-      deleteOriginFile: false
-    })
-  ],
+  plugins: [react()],
   base: '/', 
   server: {
     proxy: {
@@ -29,48 +12,35 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       }
-    },
-    // Enable compression in dev server
-    middlewareMode: false,
-    compress: true
+    }
   },
   build: {
-    // Enable compression optimizations
-    minify: 'esbuild', // Use esbuild instead of terser for faster builds
+    // Performance optimizations
+    target: 'esnext',
+    minify: 'terser',
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
-          // Split large dependencies into separate chunks for better caching
-          vendor: ['react', 'react-dom'],
-          'mui-material': ['@mui/material'],
-          'mui-icons': ['@mui/icons-material'],
-          router: ['react-router-dom'],
-          utils: ['@emailjs/browser', 'query-string']
-        },
-        // Optimize chunk file names for better caching
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.css')) {
-            return 'assets/css/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          mui: ['@mui/material', '@mui/icons-material'],
+          utils: ['@emailjs/browser']
         }
-      },
-      // Disable strict tree shaking to prevent build issues
-      treeshake: false
+      }
     },
-    chunkSizeWarningLimit: 500, // Stricter chunk size limit
-    // Disable source maps for production
-    sourcemap: false,
-    // Optimize CSS
-    cssCodeSplit: true,
-    // Increase memory for builds
-    commonjsOptions: {
-      include: [/node_modules/]
-    }
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    chunkSizeWarningLimit: 1000
   },
-  // Add optimizations for dependencies
   optimizeDeps: {
-    include: ['react', 'react-dom', '@mui/material', '@mui/icons-material']
+    include: ['react', 'react-dom', 'react-router-dom', '@mui/material', '@mui/icons-material']
+  },
+  esbuild: {
+    // Remove console.log in production
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
   }
 });
