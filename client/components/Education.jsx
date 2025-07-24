@@ -12,7 +12,7 @@ const EducationCard = memo(({ education }) => (
                 className="SelfImg" 
                 src={education.imgurl} 
                 alt={education.institution}
-                loading="lazy"
+                onLoad={(e) => e.target.classList.add('loaded')}
             />
         )}
 

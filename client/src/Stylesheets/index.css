@@ -33,9 +33,10 @@ a:hover {
 }
 
 body {
-  margin: auto;
+  margin: 0 auto;
   background-color: var(--primary-bg);
   width: 980px;
+  padding: 0 1rem;
   position: relative; /* Needed for pseudo-element positioning */
   z-index: 1;
   overflow-x: hidden;
@@ -74,6 +75,7 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
   color: var(--accent-cyan);
+  text-align: center;
 }
 
 /*Education Page*/
@@ -519,11 +521,13 @@ nav button:hover {
   border-radius: 14px;
   box-shadow: 0 2px 12px rgba(62,142,208,0.10);
   padding: 1.5rem 1rem;
-  min-width: 320px;
+  min-width: 0;
   max-width: 420px;
-  flex: 0 0 400px;
+  flex: 1 1 400px;
   border: 1.5px solid var(--accent-blue);
   gap: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .gallery-arrow {
@@ -561,44 +565,18 @@ nav button:hover {
 }
 
 .image-gallery img {
+  width: 100%;
   max-width: 350px;
   max-height: 260px;
+  height: auto;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(62,142,208,0.18);
   border: 1.5px solid var(--accent-cyan);
   background: var(--primary-bg);
   transition: box-shadow 0.2s;
   display: block;
-}
-
-.image-gallery img {
-  max-width: 350px;
-  max-height: 260px;
-  margin: 1rem 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(62,142,208,0.18);
-  border: 1.5px solid var(--accent-cyan);
-  background: var(--primary-bg);
-  transition: box-shadow 0.2s;
-}
-
-/* Responsive for mobile */
-@media (max-width: 900px) {
-  .project-main {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-  }
-  .project-description, .image-gallery {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    padding: 1.2rem 1rem;
-  }
-  .image-gallery {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
+  object-fit: contain;
+  box-sizing: border-box;
 }
 
 .page-title {
@@ -616,6 +594,9 @@ nav button:hover {
   justify-content: center;
   gap: 2rem;
   margin-top: 2rem;
+  width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .project-item{
@@ -631,6 +612,8 @@ nav button:hover {
   max-width: 1000px;
   border: 1.5px solid var(--accent-blue);
   margin-bottom: 2rem;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .project-main {

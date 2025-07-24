@@ -22,7 +22,7 @@ const About = memo(() => {
                     className="SelfImg" 
                     src="/res/Pic of me.jpg" 
                     alt="Picture of Joshua D" 
-                    loading="lazy"
+                    onLoad={(e) => e.target.classList.add('loaded')}
                 />
                 <button onClick={openResume}>Open Resume</button>
                 <button onClick={() => navigateTo("/contact")}>
@@ -30,7 +30,7 @@ const About = memo(() => {
                     <img 
                         src="https://cdn-icons-png.freepik.com/256/11714/11714679.png?semt=ais_hybrid" 
                         alt="Contact Icon"
-                        loading="lazy"
+                        onLoad={(e) => e.target.classList.add('loaded')}
                     /> 
                 </button>
             </div>
