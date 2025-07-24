@@ -2,7 +2,11 @@ import { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { list } from "../project/api-project.js";
 
 const ImageGallery = memo(({ project, currentIndex, onNext, onPrev }) => {
-    if (!project.imgurl || project.imgurl.length === 0) return null;
+    if (!project.imgurl || project.imgurl.length === 0) {
+        return null;
+    }
+
+    const imageUrl = project.imgurl[currentIndex || 0];
 
     return (
         <div className="image-gallery">
@@ -14,9 +18,9 @@ const ImageGallery = memo(({ project, currentIndex, onNext, onPrev }) => {
                 ⟨
             </button>
             <img
-                src={project.imgurl[currentIndex || 0]}
+                src={imageUrl}
                 alt={`${project.title} screenshot ${(currentIndex || 0) + 1}`}
-                loading="lazy"
+                onLoad={(e) => e.target.classList.add('loaded')}
             />
             <button
                 className="gallery-arrow right"

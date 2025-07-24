@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Image Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-image { 
+            border: 3px solid red; 
+            margin: 10px 0; 
+            max-width: 300px;
+            display: block !important;
+        }
+        .loaded { border-color: green; }
+        .failed { border-color: red; background: #ffebee; }
+    </style>
+</head>
+<body>
+    <h1>Simple Image Loading Test</h1>
+    <p>Testing if images load outside of React:</p>
+    
+    <h3>Test 1: Direct image path</h3>
+    <img src="res/Terminus/Terminus1.jpg" class="test-image" 
+         onload="this.className='test-image loaded'; console.log('Direct image loaded')" 
+         onerror="this.className='test-image failed'; console.error('Direct image failed')">
+    
+    <h3>Test 2: API fetch test</h3>
+    <div id="api-test">Loading...</div>
+    
+    <h3>Test 3: Console logs</h3>
+    <div id="console-output"></div>
+
+    <script>
+        console.log('Simple test page started');
+        
+        // Test API and show results
+        fetch('/api/projects')
+            .then(response => response.json())
+            .then(projects => {
+                console.log('API response:', projects);
+                const apiDiv = document.getElementById('api-test');
+                
+                if (projects && projects.length > 0) {
+                    const project = projects[0]; // Get first project
+                    if (project.imgurl && project.imgurl.length > 0) {
+                        const imgUrl = project.imgurl[0];
+                        console.log('Testing image URL:', imgUrl);
+                        
+                        const img = document.createElement('img');
+                        img.src = imgUrl;
+                        img.className = 'test-image';
+                        img.onload = () => {
+                            img.className = 'test-image loaded';
+                            console.log('API image loaded successfully');
+                        };
+                        img.onerror = () => {
+                            img.className = 'test-image failed';
+                            console.error('API image failed to load');
+                        };
+                        
+                        apiDiv.innerHTML = `<p>Testing: ${imgUrl}</p>`;
+                        apiDiv.appendChild(img);
+                    } else {
+                        apiDiv.innerHTML = '<p>No images found in first project</p>';
+                    }
+                } else {
+                    apiDiv.innerHTML = '<p>No projects found</p>';
+                }
+            })
+            .catch(error => {
+                console.error('API error:', error);
+                document.getElementById('api-test').innerHTML = `<p>API Error: ${error.message}</p>`;
+            });
+    </script>
+</body>
+</html>

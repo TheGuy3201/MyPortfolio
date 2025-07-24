@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Allow search engines to crawl all pages
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location (optional)
+# Sitemap: https://yourdomain.com/sitemap.xml

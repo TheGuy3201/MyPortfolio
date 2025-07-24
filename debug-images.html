@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Images</title>
+</head>
+<body>
+    <h1>Debug Image Loading</h1>
+    <div id="debug-info"></div>
+    
+    <h2>Test Images:</h2>
+    <img src="/res/BackroomsGame/Backrooms1.jpg" alt="Backrooms 1" style="max-width: 300px; border: 2px solid red;">
+    <br><br>
+    <img src="http://localhost:3000/res/BackroomsGame/Backrooms1.jpg" alt="Backrooms 1 with full URL" style="max-width: 300px; border: 2px solid blue;">
+    
+    <script>
+        // Test fetching project data
+        fetch('/api/projects')
+            .then(res => res.json())
+            .then(projects => {
+                const debugDiv = document.getElementById('debug-info');
+                debugDiv.innerHTML = '<h3>Projects from API:</h3>';
+                
+                projects.forEach((project, index) => {
+                    debugDiv.innerHTML += `
+                        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                            <h4>${project.title}</h4>
+                            <p>Image URLs: ${JSON.stringify(project.imgurl)}</p>
+                            ${project.imgurl.map((url, i) => `
+                                <div>
+                                    <p>Image ${i + 1}: ${url}</p>
+                                    <img src="${url}" alt="${project.title} ${i + 1}" 
+                                         style="max-width: 200px; border: 1px solid green; display: block; margin: 5px 0;"
+                                         onerror="this.style.border='2px solid red'; this.title='Failed to load: ' + this.src;"
+                                         onload="this.style.border='2px solid green'; this.title='Successfully loaded: ' + this.src;">
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                });
+            })
+            .catch(err => {
+                document.getElementById('debug-info').innerHTML = '<p style="color: red;">Error: ' + err.message + '</p>';
+            });
+    </script>
+</body>
+</html>

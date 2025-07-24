@@ -12,7 +12,12 @@ const ServiceCard = memo(({ service, index, isFlipped, onToggleFlip }) => (
                 className="ServiceCardFront"
                 onClick={() => onToggleFlip(index)}
             >
-                <img src={service.icon} alt={service.title} className="service-icon" loading="lazy" />
+                <img 
+                    src={service.icon} 
+                    alt={service.title} 
+                    className="service-icon" 
+                    onLoad={(e) => e.target.classList.add('loaded')}
+                />
                 <h2>{service.title}</h2>
             </div>
             

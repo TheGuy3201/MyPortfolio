@@ -30,7 +30,7 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https:"],
-            scriptSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
             objectSrc: ["'none'"],
             imgSrc: ["'self'", "data:", "https:", "http:"],
             fontSrc: ["'self'", "https:", "data:"],
@@ -68,6 +68,12 @@ app.use((err, req, res, next) => {
     res.status(400).json({ "error": err.name + ": " + err.message });
     console.log(err);
   }
+});
+
+// Serve robots.txt from client/public directory
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, '..', 'client', 'public', 'robots.txt'));
 });
 
 // Catch-all handler: send back React's index.html file for client-side routing

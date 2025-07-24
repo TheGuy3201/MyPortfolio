@@ -33,18 +33,18 @@ const Home = memo(() => {
             About Me 
             <img 
                 className="RedirectIcon" 
-                src="https://static.vecteezy.com/system/resources/thumbnails/033/882/148/small_2x/transparent-background-person-icon-free-png.png"
+                src="/res/person-icon.svg"
                 alt="About icon"
-                loading="lazy"
+                onLoad={(e) => e.target.classList.add('loaded')}
             /> 
         </button>
         <button className="RedirectButton" onClick={() => navigateTo("/project")}>
             My Projects 
             <img 
                 className="RedirectIcon" 
-                src="https://cdn-icons-png.freepik.com/256/12148/12148631.png?semt=ais_hybrid"
+                src="/res/projects-icon.svg"
                 alt="Projects icon"
-                loading="lazy"
+                onLoad={(e) => e.target.classList.add('loaded')}
             /> 
         </button>
     </nav>
