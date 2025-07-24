@@ -45,6 +45,9 @@ app.use(cors({
 // Serve static files from client/public directory
 app.use('/res', express.static(path.join(__dirname, '..', 'client', 'public', 'res')));
 
+// Serve static files from the built React app
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+
 // Register routes with the correct base paths
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
@@ -56,6 +59,11 @@ app.use('/api/auth', authRoutes); // Register authRoutes
 // Optional: Also mount userRoutes and authRoutes at root if needed
 // app.use('/', userRoutes);
 // app.use('/', authRoutes);
+
+// Catch-all handler: send back React's index.html file for client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
