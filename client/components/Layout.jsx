@@ -2,8 +2,10 @@ import React from 'react';
 import auth from "../lib/auth-helper";
 import { useNavigate } from "react-router-dom";
 
-export default function Layout() {
+const Layout = React.forwardRef(() => {
     const navigate = useNavigate();
+    const authenticatedUser = auth.isAuthenticated();
+    const isAdmin = authenticatedUser && authenticatedUser.user && authenticatedUser.user.admin;
 
     function navigateTo(path) {
         navigate(path);

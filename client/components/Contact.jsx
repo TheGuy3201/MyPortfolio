@@ -111,7 +111,7 @@ export default function Contact() {
     } finally {
       setLoading(false);
     }
-  });
+  };
 
   return (
     <>
