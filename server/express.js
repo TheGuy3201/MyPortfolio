@@ -60,11 +60,6 @@ app.use('/api/auth', authRoutes); // Register authRoutes
 // app.use('/', userRoutes);
 // app.use('/', authRoutes);
 
-// Catch-all handler: send back React's index.html file for client-side routing
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
-});
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
@@ -73,6 +68,12 @@ app.use((err, req, res, next) => {
     res.status(400).json({ "error": err.name + ": " + err.message });
     console.log(err);
   }
+});
+
+// Catch-all handler: send back React's index.html file for client-side routing
+// This MUST come last, after all API routes and error handling
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
 export default app;
