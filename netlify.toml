@@ -1,7 +1,8 @@
 [build]
   base = "client"
   publish = "dist"
-  command = "npm install && npm run build"
+  command = "npm install --include=dev && npm run build"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ./client/"
 
 [[redirects]]
   from = "/*"
@@ -11,7 +12,9 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  NODE_ENV = "production"
   VITE_API_URL = "http://localhost:3000" # Replace with your actual backend URL
+  NPM_FLAGS = "--no-audit --no-optional"
 
 [dev]
   command = "npm run dev"

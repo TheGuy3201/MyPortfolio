@@ -16,7 +16,7 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    minify: 'terser',
+    minify: 'esbuild',
     sourcemap: false,
     outDir: 'dist',
     rollupOptions: {
@@ -26,12 +26,6 @@ export default defineConfig({
           mui: ['@mui/material', '@mui/icons-material'],
           utils: ['@emailjs/browser']
         }
-      }
-    },
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
       }
     },
     chunkSizeWarningLimit: 1000
