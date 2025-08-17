@@ -1,17 +1,20 @@
 [build]
   base = "client"
   publish = "dist"
-  command = "npm run build"
+  command = "npm install && npm run build"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
 
 [build.environment]
   NODE_VERSION = "18"
+  VITE_API_URL = "http://localhost:3000" # Replace with your actual backend URL
 
 [dev]
   command = "npm run dev"
+  port = 5173
   targetPort = 5173
   publish = "dist"
