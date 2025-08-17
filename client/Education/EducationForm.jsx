@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { create } from "../lib/api-education";
+import { create } from "./api-education";
 import auth from "../lib/auth-helper";
 
 export default function EducationForm() {

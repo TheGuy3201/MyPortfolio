@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { read, update } from "../lib/api-education";
+import { read, update } from "./api-education";
 import { useParams, useNavigate } from "react-router-dom";
 import auth from "../lib/auth-helper";
 

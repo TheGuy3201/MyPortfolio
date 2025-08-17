@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Divider, Alert } from '@mui/material';
 import { Delete as DeleteIcon, Email as EmailIcon, Phone as PhoneIcon, Person as PersonIcon, Subject as SubjectIcon } from '@mui/icons-material';
-import { listContacts, deleteContact } from '../lib/api-contact';
+import { listContacts, deleteContact } from './api-contact';
 import auth from '../lib/auth-helper';
 import { Link } from 'react-router-dom';
 

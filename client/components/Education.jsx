@@ -1,5 +1,5 @@
 import { useState, useEffect, memo, useCallback } from "react";
-import { list } from "../lib/api-education.js";
+import { list } from "../Education/api-education.js";
 
 const EducationCard = memo(({ education }) => (
     <div key={education._id} className="EducationCard">

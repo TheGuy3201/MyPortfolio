@@ -34,7 +34,7 @@ const handleError = (err) => {
   return { error: err.message || "An unexpected error occurred" };
 };
 
-const create = async (user) => {
+const create = async (user, signal) => {
   try {
     const response = await fetch(API_BASE, {
       method: "POST",
@@ -43,6 +43,7 @@ const create = async (user) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
+      signal,
     });
     return await handleResponse(response);
   } catch (err) {
@@ -79,7 +80,7 @@ const read = async ({ userId }, { t }, signal) => {
   }
 };
 
-const update = async ({ userId }, { t }, user) => {
+const update = async ({ userId }, { t }, user, signal) => {
   try {
     const response = await fetch(`${API_BASE}/${userId}`, {
       method: "PUT",
@@ -89,6 +90,7 @@ const update = async ({ userId }, { t }, user) => {
         Authorization: `Bearer ${t}`,
       },
       body: JSON.stringify(user),
+      signal,
     });
     return await handleResponse(response);
   } catch (err) {
@@ -96,7 +98,7 @@ const update = async ({ userId }, { t }, user) => {
   }
 };
 
-const remove = async ({ userId }, { t }) => {
+const remove = async ({ userId }, { t }, signal) => {
   try {
     const response = await fetch(`${API_BASE}/${userId}`, {
       method: "DELETE",
@@ -105,6 +107,7 @@ const remove = async ({ userId }, { t }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${t}`,
       },
+      signal,
     });
     return await handleResponse(response);
   } catch (err) {

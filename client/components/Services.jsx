@@ -1,5 +1,5 @@
 import { useState, useEffect, memo, useCallback, useMemo } from "react";
-import { listServices } from "../lib/api-service.js";
+import { listServices } from "../Service/api-service.js";
 
 const ServiceCard = memo(({ service, index, isFlipped, onToggleFlip }) => (
     <div

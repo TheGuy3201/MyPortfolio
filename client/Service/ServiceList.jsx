@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { listAll, remove } from "../lib/api-service";
+import { listAll, remove } from "./api-service";
 import { Link } from "react-router-dom";
 import auth from "../lib/auth-helper";
 

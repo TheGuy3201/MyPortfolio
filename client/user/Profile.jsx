@@ -26,19 +26,36 @@ export default function Profile() {
   const { userId } = useParams();
 
   useEffect(() => {
+    if (!jwt || !jwt.token) {
+      setRedirectToSignin(true);
+      return;
+    }
+
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    read({ userId }, { t: jwt.token }, signal).then((data) => {
-      if (data && data.error) {
-        setRedirectToSignin(true);
-      } else {
-        setUser(data);
+    const fetchData = async () => {
+      try {
+        const data = await read({ userId }, { t: jwt.token }, signal);
+        if (data && data.error) {
+          setRedirectToSignin(true);
+        } else {
+          setUser(data);
+        }
+      } catch (err) {
+        if (!signal.aborted) {
+          console.error('Profile fetch error:', err);
+          setRedirectToSignin(true);
+        }
       }
-    });
+    };
 
-    return () => abortController.abort();
-  }, [userId, jwt.token]);
+    fetchData();
+
+    return () => {
+      abortController.abort();
+    };
+  }, [userId, jwt]);
 
   if (redirectToSignin) {
     return (

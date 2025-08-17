@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { create } from "../lib/api-service";
+import { create } from "./api-service";
 import auth from "../lib/auth-helper";
 
 export default function ServiceForm() {

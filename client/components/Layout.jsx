@@ -5,7 +5,15 @@ import { useNavigate } from "react-router-dom";
 const Layout = React.forwardRef(() => {
     const navigate = useNavigate();
     const authenticatedUser = auth.isAuthenticated();
-    const isAdmin = authenticatedUser && authenticatedUser.user && authenticatedUser.user.admin;
+    const isAdmin = auth.isAdmin();
+    
+    React.useEffect(() => {
+        // Debug log
+        if (authenticatedUser && authenticatedUser.user) {
+            console.log('Current user role:', authenticatedUser.user.role);
+            console.log('Is admin?', isAdmin);
+        }
+    }, [authenticatedUser, isAdmin]);
 
     function navigateTo(path) {
         navigate(path);
@@ -37,22 +45,6 @@ const Layout = React.forwardRef(() => {
                     {!authenticatedUser && (
                         <>
                             <button
-                                onClick={() => navigateTo("/signup")}
-                                style={{
-                                    width: "40px",
-                                    height: "40px",
-                                    borderRadius: "50%",
-                                    border: "none",
-                                    background: "transparent",
-                                    cursor: "pointer",
-                                    fontWeight: "bold",
-                                }}
-                                title="Sign Up"
-                            >
-                            <img src="https://static.thenounproject.com/png/6478-200.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
-
-                            </button>
-                            <button
                                 onClick={() => navigateTo("/signin")}
                                 style={{
                                     width: "40px",
@@ -63,7 +55,7 @@ const Layout = React.forwardRef(() => {
                                     cursor: "pointer",
                                     fontWeight: "bold",
                                 }}
-                                title="Sign In"
+                                title="Admin Sign In"
                             >
                                 <img src="https://cdn-icons-png.flaticon.com/512/152/152533.png" className="Logo" alt="JD Logo" style={{ height: "48px" }} />
                             </button>
@@ -71,21 +63,7 @@ const Layout = React.forwardRef(() => {
                     )}
                     {authenticatedUser && (
                         <>
-                            <button
-                                onClick={() => navigateTo(`/user/${authenticatedUser.user._id}`)}
-                                style={{
-                                    width: "40px",
-                                    height: "40px",
-                                    borderRadius: "50%",
-                                    border: "none",
-                                    background: "transparent",
-                                    cursor: "pointer",
-                                    fontWeight: "bold",
-                                }}
-                                title="Profile"
-                            >
-                                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" className="Logo" alt="Profile" style={{ height: "48px" }} />
-                            </button>
+                            
                             <button
                                 onClick={handleSignOut}
                                 style={{

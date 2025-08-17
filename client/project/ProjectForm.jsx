@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { create } from "../project/api-project.js";
-import auth from "../lib/auth-helper";
+import { create } from "./api-project.js";
+import auth from "../lib/auth-helper.js";
 
 export default function ProjectForm() {
   const [values, setValues] = useState({

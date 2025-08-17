@@ -1,7 +1,9 @@
 import React, { Suspense, lazy } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import PerformanceProvider from './lib/PerformanceContext'
+import AdminRoute from './lib/AdminRoute'
+import auth from './lib/auth-helper'
 
 // Lazy load components for code splitting
 const Home = lazy(() => import('./components/Home'))
@@ -14,14 +16,14 @@ const Signup = lazy(() => import("./user/Signup.jsx"))
 const Signin = lazy(() => import('./lib/Signin.jsx'))
 const Users = lazy(() => import('./user/Users.jsx'))
 const Profile = lazy(() => import('./user/Profile.jsx'))
-const EducationList = lazy(() => import('./user/EducationList.jsx'))
-const EducationForm = lazy(() => import('./user/EducationForm.jsx'))
-const EditEducation = lazy(() => import('./user/EditEducation.jsx'))
-const ProjectForm = lazy(() => import('./user/ProjectForm.jsx'))
-const ContactList = lazy(() => import('./user/ContactList.jsx'))
+const EducationList = lazy(() => import('./Education/EducationList.jsx'))
+const EducationForm = lazy(() => import('./Education/EducationForm.jsx'))
+const EditEducation = lazy(() => import('./Education/EditEducation.jsx'))
+const ProjectForm = lazy(() => import('./Project/ProjectForm.jsx'))
+const ContactList = lazy(() => import('./Contact/ContactList.jsx'))
 const AdminDashboard = lazy(() => import('./user/AdminDashboard.jsx'))
-const ServiceForm = lazy(() => import('./user/ServiceForm.jsx'))
-const ServiceList = lazy(() => import('./user/ServiceList.jsx'))
+const ServiceForm = lazy(() => import('./Service/ServiceForm.jsx'))
+const ServiceList = lazy(() => import('./Service/ServiceList.jsx'))
 
 // Loading component
 const LoadingSpinner = () => (
@@ -51,16 +53,52 @@ const MainRouter = () => {
                         <Route path="/services" element={<Services />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/signin" element={<Signin />} />
-                        <Route path="/admin" element={<AdminDashboard />} />
-                        <Route path="/users" element={<Users />} />
+                        <Route path="/admin" element={
+                            <AdminRoute>
+                                <AdminDashboard />
+                            </AdminRoute>
+                        } />
+                        <Route path="/users" element={
+                            <AdminRoute>
+                                <Users />
+                            </AdminRoute>
+                        } />
                         <Route path="/user/:userId" element={<Profile />} />
-                        <Route path="/admin/education" element={<EducationList />} />
-                        <Route path="/admin/education/new" element={<EducationForm />} />
-                        <Route path="/admin/education/edit/:educationId" element={<EditEducation />} />
-                        <Route path="/admin/projects/new" element={<ProjectForm />} />
-                        <Route path="/admin/contacts" element={<ContactList />} />
-                        <Route path="/admin/services" element={<ServiceList />} />
-                        <Route path="/admin/services/new" element={<ServiceForm />} />
+                        <Route path="/admin/education" element={
+                            <AdminRoute>
+                                <EducationList />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/education/new" element={
+                            <AdminRoute>
+                                <EducationForm />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/education/edit/:educationId" element={
+                            <AdminRoute>
+                                <EditEducation />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/projects/new" element={
+                            <AdminRoute>
+                                <ProjectForm />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/contacts" element={
+                            <AdminRoute>
+                                <ContactList />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/services" element={
+                            <AdminRoute>
+                                <ServiceList />
+                            </AdminRoute>
+                        } />
+                        <Route path="/admin/services/new" element={
+                            <AdminRoute>
+                                <ServiceForm />
+                            </AdminRoute>
+                        } />
                     </Routes>
                 </Suspense>
             </div>

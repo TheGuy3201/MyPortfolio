@@ -13,23 +13,31 @@ export default function Signin() {
     redirectToReferrer: false,
   });
 
-  const clickSubmit = (e) => {
+  const clickSubmit = async (e) => {
     e.preventDefault();
     const user = {
       email: values.email || undefined,
       password: values.password || undefined,
     };
     console.log("Submitting:", user);
-    signin(user).then((data) => {
+    try {
+      const data = await signin(user);
       console.log("API response:", data);
       if (data.error) {
         setValues({ ...values, error: data.error });
+      } else if (!data.token || !data.user) {
+        setValues({ ...values, error: "Invalid response from server" });
       } else {
+        // Log the role for debugging
+        console.log("User role:", data.user.role);
         auth.authenticate(data, () => {
           setValues({ ...values, error: "", redirectToReferrer: true });
         });
       }
-    });
+    } catch (err) {
+      console.error("Signin error:", err);
+      setValues({ ...values, error: "Failed to sign in" });
+    }
   };
 
   const handleChange = (name) => (event) => {

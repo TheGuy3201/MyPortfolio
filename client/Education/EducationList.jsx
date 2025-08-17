@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { list, remove } from "../lib/api-education";
+import { list, remove } from "./api-education";
 import { Link, useNavigate } from "react-router-dom";
 import auth from "../lib/auth-helper";
 

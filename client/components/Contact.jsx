@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createContact } from "../lib/api-contact.js";
+import { createContact } from "../Contact/api-contact.js";
 import emailjs from '@emailjs/browser';
 
 // Initialize EmailJS with your public key
