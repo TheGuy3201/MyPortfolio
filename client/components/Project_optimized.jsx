@@ -15,7 +15,7 @@ const ImageGallery = memo(({ project, currentIndex, onNext, onPrev }) => {
             </button>
             <img
                 src={project.imgurl[currentIndex || 0]}
-                alt={`${project.title} screenshot ${(currentIndex || 0) + 1}`}
+                alt={`Coming Soon: ${project.title} screenshot ${(currentIndex || 0) + 1}`}
                 onLoad={(e) => e.target.classList.add('loaded')}
             />
             <button
