@@ -15,6 +15,6 @@ router.route('/:userId')
   .put(authCtrl.requireSignin, authCtrl.hasAuthorization, writeLimiter, validateUserInput, userCtrl.update)
   .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, deleteLimiter, userCtrl.remove)
 
-router.param('userId', userCtrl.userByID)
+router.param('userId', readLimiter, userCtrl.userByID)
 
 export default router
