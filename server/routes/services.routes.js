@@ -10,7 +10,7 @@ router.route('/')
   .post(authCtrl.requireSignin, adminLimiter, authCtrl.requireAdmin, servicesCtrl.create)  // Only admin can create
 
 router.route('/all')
-  .get(authCtrl.requireSignin, authCtrl.requireAdmin, readLimiter, servicesCtrl.listAll)  // Only admin can view all services
+  .get(readLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, servicesCtrl.listAll)  // Only admin can view all services
 
 router.route('/:serviceId')
   .get(readLimiter, servicesCtrl.read)
