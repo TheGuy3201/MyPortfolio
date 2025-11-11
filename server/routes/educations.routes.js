@@ -7,12 +7,12 @@ const router = express.Router()
 
 router.route('/')
   .get(readLimiter, educationCtrl.list)
-  .post(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, educationCtrl.create)
+  .post(adminLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, educationCtrl.create)
 
 router.route('/:educationId')
   .get(readLimiter, educationCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, educationCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.requireAdmin, deleteLimiter, educationCtrl.remove)
+  .put(adminLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, educationCtrl.update)
+  .delete(deleteLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, educationCtrl.remove)
 
 router.param('educationId', educationCtrl.educationByID)
 
