@@ -14,7 +14,7 @@ router.route('/all')
 
 router.route('/:serviceId')
   .get(readLimiter, servicesCtrl.read)
-  .put(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, servicesCtrl.update)
+  .put(adminLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, servicesCtrl.update)
   .delete(deleteLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, servicesCtrl.remove)
 
 router.param('serviceId', servicesCtrl.serviceByID)
