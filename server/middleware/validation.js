@@ -10,9 +10,16 @@ export const sanitizeString = (str) => {
     .trim();
 };
 
-// Validate email format
+// Validate email format (optimized to prevent ReDoS attacks)
 export const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Length validation to prevent DoS
+  if (typeof email !== 'string' || email.length > 254) {
+    return false;
+  }
+  
+  // RFC 5322 compliant regex optimized to prevent ReDoS
+  // Uses specific character classes and limits backtracking
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   return emailRegex.test(email);
 };
 
@@ -25,7 +32,16 @@ export const validatePassword = (password) => {
     };
   }
   
+  // Maximum length to prevent DoS attacks
+  if (password.length > 128) {
+    return {
+      valid: false,
+      message: 'Password must not exceed 128 characters'
+    };
+  }
+  
   // Check for at least one number, one uppercase, one lowercase
+  // Simple character class regexes are safe from ReDoS
   const hasNumber = /\d/.test(password);
   const hasUpper = /[A-Z]/.test(password);
   const hasLower = /[a-z]/.test(password);

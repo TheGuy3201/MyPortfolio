@@ -1,12 +1,20 @@
 const config = {
     env: process.env.NODE_ENV || 'development',
     port: process.env.PORT || 3000,
-    jwtSecret: process.env.JWT_SECRET || "YOUR_secret_key",
-    mongoUri: process.env.MONGODB_URI ||
-    "mongodb+srv://joshdes21:zl03V8mg5PM5JLbx@cluster0.ca5lum6.mongodb.net/MyPortfolio?retryWrites=true&w=majority&appName=Cluster0" ||
-    process.env.MONGO_HOST ||
+    jwtSecret: process.env.JWT_SECRET,
+    mongoUri: process.env.MONGODB_URI || 
     'mongodb://' + (process.env.IP || 'localhost') + ':' +
     (process.env.MONGO_PORT || '27017') +
     '/mernproject'
 }
+
+// Validate required environment variables
+if (!config.jwtSecret) {
+    throw new Error('JWT_SECRET environment variable is required');
+}
+
+if (!config.mongoUri || config.mongoUri.includes('localhost')) {
+    console.warn('⚠️  WARNING: Using local MongoDB. Set MONGODB_URI environment variable for production.');
+}
+
 export default config

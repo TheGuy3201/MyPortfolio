@@ -11,8 +11,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         trim: true,
         unique: 'Email already exists',
-        match: [/.+\@.+\..+/, 'Please fill a valid email address'],
-        required: 'Email is required'
+        match: [/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, 'Please fill a valid email address'],
+        required: 'Email is required',
+        maxlength: [254, 'Email must not exceed 254 characters']
     },
     role: {
         type: String,
@@ -44,8 +45,11 @@ UserSchema.virtual('password')
     });
 
 UserSchema.path('hashed_password').validate(function(v) {
-    if (this._password && this._password.length < 6) {
-        this.invalidate('password', 'Password must be at least 6 characters.');
+    if (this._password && this._password.length < 8) {
+        this.invalidate('password', 'Password must be at least 8 characters.');
+    }
+    if (this._password && this._password.length > 128) {
+        this.invalidate('password', 'Password must not exceed 128 characters.');
     }
     if (this.isNew && !this._password) {
         this.invalidate('password', 'Password is required');
