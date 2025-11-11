@@ -12,12 +12,20 @@ import educationRoutes from './routes/educations.routes.js';
 import contactsRoutes from './routes/contacts.routes.js';
 import servicesRoutes from './routes/services.routes.js';
 import authRoutes from './routes/auth.routes.js'; // Import authRoutes
+import rateLimit from 'express-rate-limit';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Rate limiter middleware for catch-all route (serving index.html)
+const catchAllLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  standardHeaders: true, // Return rate limit info in the RateLimit-* headers
+  legacyHeaders: false, // Disable the X-RateLimit-* headers
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -78,7 +86,7 @@ app.get('/robots.txt', (req, res) => {
 
 // Catch-all handler: send back React's index.html file for client-side routing
 // This MUST come last, after all API routes and error handling
-app.get('*', (req, res) => {
+app.get('*', catchAllLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
