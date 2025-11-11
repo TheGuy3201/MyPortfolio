@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.route('/')
   .get(readLimiter, servicesCtrl.list)  // Public can view active services
-  .post(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, servicesCtrl.create)  // Only admin can create
+  .post(authCtrl.requireSignin, adminLimiter, authCtrl.requireAdmin, servicesCtrl.create)  // Only admin can create
 
 router.route('/all')
   .get(authCtrl.requireSignin, authCtrl.requireAdmin, readLimiter, servicesCtrl.listAll)  // Only admin can view all services
