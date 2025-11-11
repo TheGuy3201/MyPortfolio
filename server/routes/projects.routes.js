@@ -6,7 +6,7 @@ import { readLimiter, adminLimiter, deleteLimiter } from '../middleware/rateLimi
 const router = express.Router();
 
 router.route('/')
-  .post(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, projectCtrl.create)
+  .post(adminLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, projectCtrl.create)
   .get(readLimiter, projectCtrl.list);
 
 router.route('/:projectId')
