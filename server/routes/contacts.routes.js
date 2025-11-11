@@ -8,10 +8,10 @@ const router = express.Router()
 
 router.route('/')
   .post(contactLimiter, validateContactInput, contactsCtrl.create)  // Strict limit on contact submissions to prevent spam
-  .get(authCtrl.requireSignin, authCtrl.requireAdmin, readLimiter, contactsCtrl.list)  // Only admin can list contacts
+  .get(readLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, contactsCtrl.list)  // Only admin can list contacts
 
 router.route('/:contactId')
-  .get(authCtrl.requireSignin, authCtrl.requireAdmin, readLimiter, contactsCtrl.read)
+  .get(readLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, contactsCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, contactsCtrl.update)
   .delete(authCtrl.requireSignin, authCtrl.requireAdmin, deleteLimiter, contactsCtrl.remove)
 
