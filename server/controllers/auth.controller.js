@@ -5,6 +5,9 @@ import config from './../../config/config.js'
 
 const signin = async (req, res) => {
   try {
+    if (typeof req.body.email !== "string") {
+      return res.status(400).json({ error: "Invalid email format" });
+    }
     let user = await User.findOne({ "email": req.body.email })
     if (!user)
       return res.status(401).json({ error: "User not found" })
