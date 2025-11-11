@@ -12,7 +12,7 @@ router.route('/')
 router.route('/:projectId')
   .get(readLimiter, projectCtrl.read)
   .put(authCtrl.requireSignin, authCtrl.requireAdmin, adminLimiter, projectCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.requireAdmin, deleteLimiter, projectCtrl.remove);
+  .delete(deleteLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, projectCtrl.remove);
 
 // Middleware to fetch project by ID
 router.param('projectId', projectCtrl.projectByID);
