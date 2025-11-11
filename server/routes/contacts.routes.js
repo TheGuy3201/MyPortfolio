@@ -13,7 +13,7 @@ router.route('/')
 router.route('/:contactId')
   .get(readLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, contactsCtrl.read)
   .put(adminLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, contactsCtrl.update)
-  .delete(authCtrl.requireSignin, authCtrl.requireAdmin, deleteLimiter, contactsCtrl.remove)
+  .delete(deleteLimiter, authCtrl.requireSignin, authCtrl.requireAdmin, contactsCtrl.remove)
 
 router.param('contactId', contactsCtrl.contactByID)
 
