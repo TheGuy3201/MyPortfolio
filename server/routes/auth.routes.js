@@ -1,19 +1,14 @@
 import express from 'express'
 import authCtrl from '../controllers/auth.controller.js'
-import rateLimit from 'express-rate-limit'
-
-// Apply a strict rate limit to the /signin endpoint to prevent brute-force attacks
-const signinLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
-  message: 'Too many login attempts from this IP, please try again after 5 minutes'
-})
+import { authLimiter } from '../middleware/rateLimiter.js'
 
 const router = express.Router()
 
+// Apply strict rate limiting to signin to prevent brute-force attacks
 router.route('/signin')
-  .post(signinLimiter, authCtrl.signin)
+  .post(authLimiter, authCtrl.signin)
 
+// Signout doesn't need rate limiting as it's not a security risk
 router.route('/signout')
   .get(authCtrl.signout)
 

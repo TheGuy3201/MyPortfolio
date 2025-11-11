@@ -13,6 +13,7 @@ import contactsRoutes from './routes/contacts.routes.js';
 import servicesRoutes from './routes/services.routes.js';
 import authRoutes from './routes/auth.routes.js'; // Import authRoutes
 import rateLimit from 'express-rate-limit';
+import { sanitizeBody, preventNoSQLInjection } from './middleware/validation.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,12 +28,19 @@ const catchAllLimiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the RateLimit-* headers
   legacyHeaders: false, // Disable the X-RateLimit-* headers
 });
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+// Body parsing middleware with size limits
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(compress());
+
+// Security middleware - apply to all routes
+app.use(sanitizeBody);
+app.use(preventNoSQLInjection);
+// Enhanced helmet configuration for better security
 app.use(helmet({
     crossOriginResourcePolicy: false,
     contentSecurityPolicy: {
@@ -43,8 +51,21 @@ app.use(helmet({
             objectSrc: ["'none'"],
             imgSrc: ["'self'", "data:", "https:", "http:"],
             fontSrc: ["'self'", "https:", "data:"],
+            connectSrc: ["'self'", "https:"],
+            frameSrc: ["'none'"],
+            baseUri: ["'self'"],
+            formAction: ["'self'"],
         },
     },
+    hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+    },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    noSniff: true,
+    xssFilter: true,
+    hidePoweredBy: true,
 }));
 app.use(cors({
     origin: ["http://localhost:5173", "http://localhost:5174"],
