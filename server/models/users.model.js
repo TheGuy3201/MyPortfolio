@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import crypto from 'crypto'
+import bcrypt from 'bcrypt'
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -30,15 +30,14 @@ const UserSchema = new mongoose.Schema({
     hashed_password: {
         type: String,
         required: 'Password is required'
-    },
-    salt: String
+    }
 });
 
 UserSchema.virtual('password')
     .set(function(password) {
         this._password = password;
-        this.salt = this.makeSalt();
-        this.hashed_password = this.encryptPassword(password);
+        // Use 12 salt rounds for good security
+        this.hashed_password = bcrypt.hashSync(password, 12);
     })
     .get(function() {
         return this._password;
@@ -55,21 +54,7 @@ UserSchema.path('hashed_password').validate(function(v) {
 
 UserSchema.methods = {
     authenticate: function(plainText) {
-        return this.encryptPassword(plainText) === this.hashed_password
-    },
-    encryptPassword: function(password) {
-        if (!password) return ''
-        try {
-            return crypto
-                .createHmac('sha1', this.salt)
-                .update(password)
-                .digest('hex')
-        } catch (err) {
-            return ''
-        }
-    },
-    makeSalt: function() {
-        return Math.round((new Date().valueOf() * Math.random())) + ''
+        return bcrypt.compareSync(plainText, this.hashed_password)
     }
 }
 
