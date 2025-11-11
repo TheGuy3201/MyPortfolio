@@ -14,6 +14,7 @@ import servicesRoutes from './routes/services.routes.js';
 import authRoutes from './routes/auth.routes.js'; // Import authRoutes
 import rateLimit from 'express-rate-limit';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -78,8 +79,16 @@ app.use((err, req, res, next) => {
   }
 });
 
+
+// Rate limiter middleware for robots.txt route
+const robotsLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 // Serve robots.txt from client/public directory
-app.get('/robots.txt', (req, res) => {
+app.get('/robots.txt', robotsLimiter, (req, res) => {
   res.type('text/plain');
   res.sendFile(path.join(__dirname, '..', 'client', 'public', 'robots.txt'));
 });
